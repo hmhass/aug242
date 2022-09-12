@@ -36,6 +36,39 @@ def mymethod2 ():
     ret = {'step-count':steps,'distance':distance, 'time offset':diffmins}
     return ret
 
+@app.route("/sleep/<date>")
+def sleep(date):
+    token2 = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMzhSRFQiLCJzdWIiOiJCNEYzNVEiLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJzY29wZXMiOiJyc29jIHJzZXQgcm94eSBycHJvIHJudXQgcnNsZSByYWN0IHJsb2MgcnJlcyByd2VpIHJociBydGVtIiwiZXhwIjoxNjkzNDg4MDQxLCJpYXQiOjE2NjE5NTIwNDF9.uk4UyLwyQeLjnoE6jxKPNCxfkzs0mFTq_09cfuyV74U"
+    token3 = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMzhSNkIiLCJzdWIiOiJCNEYzNVEiLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJzY29wZXMiOiJyc29jIHJzZXQgcm94eSBybnV0IHJwcm8gcnNsZSByYWN0IHJsb2MgcnJlcyByd2VpIHJociBydGVtIiwiZXhwIjoxNjkyMjk1NDQ0LCJpYXQiOjE2NjA3NTk0NDR9.bILcGIrPRXPWRrWBZDKRLsZdtTKKqPUpZ4NZZ-U3k5g"
+    header = {'Accept' : 'application/json', 'Authorization' : 'Bearer {}'.format(token3)}
+    sleepurl = "https://api.fitbit.com/1.2/user/-/sleep/date/" + date + ".json"
+    sleepresp = requests.get(sleepurl, headers=header).json()
+
+    if sleepresp["sleep"] == []:
+        return("No sleep record for this date")
+    else:
+        deep = sleepresp["summary"]["stages"]["deep"]
+        light = sleepresp["summary"]["stages"]["light"]
+        rem = sleepresp["summary"]["stages"]["rem"]
+        wake = sleepresp["summary"]["stages"]["wake"]
+        ret = {'deep': deep, 'light': light, 'rem': rem, 'wake': wake}
+        return ret
+
+@app.route("/activity/<date>")
+def act(date):
+    token2 = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMzhSRFQiLCJzdWIiOiJCNEYzNVEiLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJzY29wZXMiOiJyc29jIHJzZXQgcm94eSBycHJvIHJudXQgcnNsZSByYWN0IHJsb2MgcnJlcyByd2VpIHJociBydGVtIiwiZXhwIjoxNjkzNDg4MDQxLCJpYXQiOjE2NjE5NTIwNDF9.uk4UyLwyQeLjnoE6jxKPNCxfkzs0mFTq_09cfuyV74U"
+    token3 = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMzhSNkIiLCJzdWIiOiJCNEYzNVEiLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJzY29wZXMiOiJyc29jIHJzZXQgcm94eSBybnV0IHJwcm8gcnNsZSByYWN0IHJsb2MgcnJlcyByd2VpIHJociBydGVtIiwiZXhwIjoxNjkyMjk1NDQ0LCJpYXQiOjE2NjA3NTk0NDR9.bILcGIrPRXPWRrWBZDKRLsZdtTKKqPUpZ4NZZ-U3k5g"
+    header = {'Accept' : 'application/json', 'Authorization' : 'Bearer {}'.format(token2)}
+    acturl = "https://api.fitbit.com/1/user/-/activities/date/" + date + ".json"
+    actresp = requests.get(acturl, headers=header).json()
+
+    very = str(actresp["summary"]["veryActiveMinutes"])
+    light = str(actresp["summary"]["lightlyActiveMinutes"])
+    sed = str(actresp["summary"]["sedentaryMinutes"])
+
+    ret = {'very-active': very, 'lightly-active': light, 'sedentary': sed}
+    return ret
+
 
 if __name__ == '__main__':
     app.run(debug=True)
