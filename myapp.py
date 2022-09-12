@@ -2,7 +2,7 @@ from flask import Flask
 import requests, datetime, math
 app = Flask(__name__)
 
-@app.route("/banana/meep", methods=["GET"])
+@app.route("/heartrate/last", methods=["GET"])
 def mymethod ():
     token2 = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMzhSRFQiLCJzdWIiOiJCNEYzNVEiLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJzY29wZXMiOiJyc29jIHJzZXQgcm94eSBycHJvIHJudXQgcnNsZSByYWN0IHJsb2MgcnJlcyByd2VpIHJociBydGVtIiwiZXhwIjoxNjkzNDg4MDQxLCJpYXQiOjE2NjE5NTIwNDF9.uk4UyLwyQeLjnoE6jxKPNCxfkzs0mFTq_09cfuyV74U"
     header = {'Accept' : 'application/json', 'Authorization' : 'Bearer {}'.format(token2)}
@@ -18,9 +18,23 @@ def mymethod ():
     ret = {'heart-rate':heartrate, 'time offset':diffmins}
     return ret
 
-@app.route("/poopy", methods=["GET"])
+@app.route("/steps/last", methods=["GET"])
 def mymethod2 ():
-    return "Test"
+    token2 = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMzhSRFQiLCJzdWIiOiJCNEYzNVEiLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJzY29wZXMiOiJyc29jIHJzZXQgcm94eSBycHJvIHJudXQgcnNsZSByYWN0IHJsb2MgcnJlcyByd2VpIHJociBydGVtIiwiZXhwIjoxNjkzNDg4MDQxLCJpYXQiOjE2NjE5NTIwNDF9.uk4UyLwyQeLjnoE6jxKPNCxfkzs0mFTq_09cfuyV74U"
+    header = {'Accept' : 'application/json', 'Authorization' : 'Bearer {}'.format(token2)}
+    stepurl = "https://api.fitbit.com/1/user/-/activities/date/today.json"
+    acturl = "https://api.fitbit.com/1/user/-/activities/calories/date/today/1d/15min.json"
+    stepresp = requests.get(stepurl, headers=myheader).json()
+    actresp = requests.get(acturl, headers=myheader).json()
+    steps = stepresp["summary"]["steps"]
+    distance = stepresp["summary"]["distances"][0]["distance"]
+    time = actresp["activities-calories-intraday"]["dataset"][-1]["time"]
+    now = datetime.datetime.now()
+    newt = datetime.datetime.strptime(time, "%H:%M:%S")
+    diffy = now - newt
+    diffmins = math.floor(diffy.seconds / 60)
+    ret = {'step-count':steps,'distance':distance, 'time offset':diffmins}
+    return(ret)
 
 
 if __name__ == '__main__':
