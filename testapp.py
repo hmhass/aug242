@@ -25,7 +25,7 @@ def get_heart():
     heartrate = heart["value"]
     ret = {'heart-rate':heartrate, 'time offset':diffmins}
 
-    return (ret)
+    return jsonify(ret)
 
 def time_diffy():
     now = datetime.datetime.now().strftime("%H:%M:%S")
