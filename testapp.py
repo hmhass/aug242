@@ -7,8 +7,7 @@ acturl = "https://api.fitbit.com/1/user/-/activities/date/2022-08-02.json"
 header = {'Accept' : 'application/json', 'Authorization' : 'Bearer {}'.format(token2)}
 hearturl = "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d/1min.json"
 
-#summ = resp["summary"]
-#print("You walked {} steps today.".format(summ["steps"]))
+
 
 def get_heart():
     resp = requests.get(hearturl, headers=header).json()
@@ -25,7 +24,7 @@ def get_heart():
     heartrate = heart["value"]
     ret = {'heart-rate':heartrate, 'time offset':diffmins}
 
-    return jsonify(ret)
+    return("poop")
 
 def time_diffy():
     now = datetime.datetime.now().strftime("%H:%M:%S")
