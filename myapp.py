@@ -24,8 +24,8 @@ def mymethod2 ():
     header = {'Accept' : 'application/json', 'Authorization' : 'Bearer {}'.format(token2)}
     stepurl = "https://api.fitbit.com/1/user/-/activities/date/today.json"
     acturl = "https://api.fitbit.com/1/user/-/activities/calories/date/today/1d/15min.json"
-    stepresp = requests.get(stepurl, headers=myheader).json()
-    actresp = requests.get(acturl, headers=myheader).json()
+    stepresp = requests.get(stepurl, headers=header).json()
+    actresp = requests.get(acturl, headers=header).json()
     steps = stepresp["summary"]["steps"]
     distance = stepresp["summary"]["distances"][0]["distance"]
     time = actresp["activities-calories-intraday"]["dataset"][-1]["time"]
@@ -34,7 +34,7 @@ def mymethod2 ():
     diffy = now - newt
     diffmins = math.floor(diffy.seconds / 60)
     ret = {'step-count':steps,'distance':distance, 'time offset':diffmins}
-    return(ret)
+    return ret
 
 
 if __name__ == '__main__':
