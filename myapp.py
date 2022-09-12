@@ -1,9 +1,10 @@
-
+from testapp import *
 from flask import Flask
 app = Flask(__name__)
 @app.route("/banana/meep", methods=["GET"])
 def mymethod ():
-    return "Why did the chicken cross the street? Ha! ha, ha!"
+    ret = get_heart()
+    return ret
 
 @app.route("/poopy", methods=["GET"])
 def mymethod2 ():
