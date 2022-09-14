@@ -15,7 +15,7 @@ def mymethod ():
     diffy = now - newht
     diffmins = math.floor(diffy.seconds / 60)
     heartrate = heart["value"]
-    ret = {'heart-rate':heartrate, 'time offset':diffmins}
+    ret = {'heart-rate':heartrate, 'time offset':diffmins-240}
     return ret
 
 @app.route("/steps/last", methods=["GET"])
@@ -33,7 +33,7 @@ def mymethod2 ():
     newt = datetime.datetime.strptime(time, "%H:%M:%S")
     diffy = now - newt
     diffmins = math.floor(diffy.seconds / 60)
-    ret = {'step-count':steps,'distance':distance, 'time offset':diffmins}
+    ret = {'step-count':steps,'distance':distance, 'time offset':diffmins-240}
     return ret
 
 @app.route("/sleep/<date>")
