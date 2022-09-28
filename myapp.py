@@ -74,7 +74,6 @@ def act(date):
 def mymethod3 ():
     client = MongoClient("mongodb+srv://hmhassell:poopybutt@cluster0.ocm571a.mongodb.net/?retryWrites=true&w=majority")
     db = client["myenvdb"]
-    # rows = db.environmental.find({"temp" : "100"})
     rowy = db.environmental.find().limit(1)
     temp = rowy[0].get("temp")
     hum = rowy[0].get("humidity")
