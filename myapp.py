@@ -70,7 +70,7 @@ def act(date):
     return ret
 
 @app.route("/sensors/env", methods=["GET"])
-def mymethod ():
+def mymethod3 ():
     return "Why did the chicken cross the street? Ha! ha, ha!"
 
 
