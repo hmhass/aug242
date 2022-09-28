@@ -1,4 +1,5 @@
-from flask import Flask
+from pymongo import MongoClient
+from flask import Flask, request, jsonify, json
 import requests, datetime, math
 app = Flask(__name__)
 
@@ -71,7 +72,38 @@ def act(date):
 
 @app.route("/sensors/env", methods=["GET"])
 def mymethod3 ():
-    return "Why did the chicken cross the street? Ha! ha, ha!"
+    client = MongoClient("mongodb+srv://hmhassell:poopybutt@cluster0.ocm571a.mongodb.net/?retryWrites=true&w=majority")
+    db = client["myenvdb"]
+    # rows = db.environmental.find({"temp" : "100"})
+    rowy = db.environmental.find().limit(1)
+    temp = rowy[0].get("temp")
+    hum = rowy[0].get("humidity")
+    time = rowy[0].get("timestamp")
+    ret = {"temp": temp, "humidity": hum, "timestamp":time}
+    return ret
+    
+@app.route("/sensors/pose", methods=["GET"])
+def mymethod4 ():
+    client = MongoClient("mongodb+srv://hmhassell:poopybutt@cluster0.ocm571a.mongodb.net/?retryWrites=true&w=majority")
+    db = client["myenvdb"]
+    rowy = db.pose.find().limit(1)
+    pres = rowy[0].get("presence")
+    pose = rowy[0].get("pose")
+    time = rowy[0].get("timestamp")
+    ret = {"presence": pres, "pose": pose, "timestamp":time}
+    return ret
+
+@app.route('/post/pose', methods=['POST'])
+def mymethod5 ():
+    data = request.data
+    input = json.loads(data)
+    client = MongoClient("mongodb+srv://hmhassell:poopybutt@cluster0.ocm571a.mongodb.net/?retryWrites=true&w=majority")
+    db = client["myenvdb"]
+    db.pose.insert_one(data)
+    ret = {"success":"yes"}
+    return ret
+
+    
 
 
 if __name__ == '__main__':
