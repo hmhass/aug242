@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from flask import Flask
+from flask import Flask, request, json
 import requests, datetime, math
 app = Flask(__name__)
 
@@ -92,15 +92,15 @@ def mymethod4 ():
     ret = {"presence": pres, "pose": pose, "timestamp":time}
     return ret
 
-# @app.route('/post/pose', methods=['POST'])
-# def mymethod5 ():
-#     data = request.data
-#     input = json.loads(data)
-#     client = MongoClient("mongodb+srv://hmhassell:poopybutt@cluster0.ocm571a.mongodb.net/?retryWrites=true&w=majority")
-#     db = client["myenvdb"]
-#     db.pose.insert_one(input)
-#     ret = {"success":"yes"}
-#     return ret
+@app.route('/post/pose', methods=['POST'])
+def mymethod5 ():
+    data = request.data
+    input = json.loads(data)
+    client = MongoClient("mongodb+srv://hmhassell:poopybutt@cluster0.ocm571a.mongodb.net/?retryWrites=true&w=majority")
+    db = client["myenvdb"]
+    db.pose.insert_one(input)
+    ret = {"success":"yes"}
+    return ret
 
     
 
