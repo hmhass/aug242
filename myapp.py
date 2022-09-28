@@ -99,7 +99,7 @@ def mymethod5 ():
     input = json.loads(data)
     client = MongoClient("mongodb+srv://hmhassell:poopybutt@cluster0.ocm571a.mongodb.net/?retryWrites=true&w=majority")
     db = client["myenvdb"]
-    db.pose.insert_one(data)
+    db.pose.insert_one(input)
     ret = {"success":"yes"}
     return ret
 
