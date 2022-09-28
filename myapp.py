@@ -102,6 +102,16 @@ def mymethod5 ():
     ret = {"success":"yes"}
     return ret
 
+@app.route('/post/env', methods=['POST'])
+def mymethod6 ():
+    data = request.data
+    input = json.loads(data)
+    client = MongoClient("mongodb+srv://hmhassell:poopybutt@cluster0.ocm571a.mongodb.net/?retryWrites=true&w=majority")
+    db = client["myenvdb"]
+    db.environmental.insert_one(input)
+    ret = {"success":"yes"}
+    return ret
+
     
 
 
