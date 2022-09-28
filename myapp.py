@@ -69,6 +69,10 @@ def act(date):
     ret = {'very-active': very, 'lightly-active': light, 'sedentary': sed}
     return ret
 
+@app.route("/sensors/env", methods=["GET"])
+def mymethod ():
+    return "Why did the chicken cross the street? Ha! ha, ha!"
+
 
 if __name__ == '__main__':
     app.run(debug=True)
