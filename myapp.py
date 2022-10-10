@@ -74,11 +74,11 @@ def act(date):
 def mymethod3 ():
     client = MongoClient("mongodb+srv://hmhassell:poopybutt@cluster0.ocm571a.mongodb.net/?retryWrites=true&w=majority")
     db = client["myenvdb"]
-    rowy = db.environmental.find().limit(1)
-    temp = rowy[0].get("temp")
+    rowy = db.environmental.find_one(sort=[("timestamp", -1)])
+    temp = rowy[0].get("temperature")
     hum = rowy[0].get("humidity")
     time = rowy[0].get("timestamp")
-    ret = {"temp": temp, "humidity": hum, "timestamp":time}
+    ret = {"temperature": temp, "humidity": hum, "timestamp":time}
     return ret
     
 @app.route("/sensors/pose", methods=["GET"])
@@ -104,11 +104,16 @@ def mymethod5 ():
 
 @app.route('/post/env', methods=['POST'])
 def mymethod6 ():
+    est = timezone("US/Eastern")
+    time = datetime.now(est)
+    timestamp = datetime.timestamp(time)
     data = request.data
     input = json.loads(data)
+    temp = float(input["temperature"])
+    hum = float(input["humidity"])
     client = MongoClient("mongodb+srv://hmhassell:poopybutt@cluster0.ocm571a.mongodb.net/?retryWrites=true&w=majority")
     db = client["myenvdb"]
-    db.environmental.insert_one(input)
+    db.environmental.insert_one({"temperature":temp, "humidity":hum, "timestamp":timestamp})
     ret = {"success":"yes"}
     return ret
 
