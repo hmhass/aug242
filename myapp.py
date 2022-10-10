@@ -2,7 +2,6 @@ from pymongo import MongoClient
 from flask import Flask, request, json
 import requests, datetime, math
 from pytz import timezone
-from datetime import datetime
 
 app = Flask(__name__)
 
@@ -108,8 +107,8 @@ def mymethod5 ():
 @app.route('/post/env', methods=['POST'])
 def mymethod6 ():
     est = timezone("US/Eastern")
-    time = datetime.now(est)
-    timestamp = datetime.timestamp(time)
+    time = datetime.datetime.now(est)
+    timestamp = datetime.datetime.timestamp(time)
     data = request.data
     input = json.loads(data)
     temp = float(input["temperature"])
