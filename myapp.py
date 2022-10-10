@@ -77,9 +77,9 @@ def mymethod3 ():
     client = MongoClient("mongodb+srv://hmhassell:poopybutt@cluster0.ocm571a.mongodb.net/?retryWrites=true&w=majority")
     db = client["myenvdb"]
     rowy = db.environmental.find_one(sort=[("timestamp", -1)])
-    temp = rowy[0].get("temperature")
-    hum = rowy[0].get("humidity")
-    time = rowy[0].get("timestamp")
+    temp = rowy["temperature"]
+    hum = rowy["humidity"]
+    time = rowy["timestamp"]
     ret = {"temperature": temp, "humidity": hum, "timestamp":time}
     return ret
     
