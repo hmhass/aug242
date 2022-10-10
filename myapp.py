@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 from flask import Flask, request, json
 import requests, datetime, math
+from datetime import *
 app = Flask(__name__)
 
 @app.route("/heartrate/last", methods=["GET"])
